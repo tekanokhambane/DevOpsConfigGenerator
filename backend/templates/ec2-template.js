@@ -1,3 +1,11 @@
+/**
+ * Generates an AWS CloudFormation template for deploying an EC2 instance.
+ *
+ * @param {string} appName - The name of the application to be deployed.
+ * @param {string} region - The AWS region where the EC2 instance will be deployed.
+ * @param {string} instanceType - The type of EC2 instance to be used.
+ * @returns {Object} The CloudFormation template as a JavaScript object.
+ */
 const generateTemplate = (appName, region, instanceType) => {
 	return {
 		AWSTemplateFormatVersion: '2010-09-09',
@@ -27,6 +35,12 @@ const generateTemplate = (appName, region, instanceType) => {
 	};
 };
 
+/**
+ * Retrieves the Amazon Machine Image (AMI) ID for a given AWS region.
+ *
+ * @param {string} region - The AWS region code (e.g., 'us-east-1', 'eu-west-1').
+ * @returns {string} The AMI ID corresponding to the specified region. If the region is not found, returns the default AMI ID for 'us-east-1'.
+ */
 const getAMIForRegion = (region) => {
 	// Simplified AMI mapping - in production, you'd want to maintain a complete mapping
 	const amiMap = {

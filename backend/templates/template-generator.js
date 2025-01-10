@@ -1,3 +1,13 @@
+/**
+ * Generates an AWS CloudFormation template for deploying an EC2 instance.
+ *
+ * @param {Object} config - Configuration object for the EC2 instance.
+ * @param {string} config.appName - The name of the application.
+ * @param {string} config.instanceType - The type of the EC2 instance (e.g., t2.micro).
+ * @param {number} [config.volumeSize=8] - The size of the EBS volume in GB. Defaults to 8 if not provided.
+ * @param {string} config.region - The AWS region where the EC2 instance will be deployed.
+ * @returns {Object} - The CloudFormation template as a JavaScript object.
+ */
 const generateEC2Template = (config) => ({
 	AWSTemplateFormatVersion: '2010-09-09',
 	Description: `EC2 instance deployment for ${config.appName}`,
@@ -28,6 +38,17 @@ const generateEC2Template = (config) => ({
 	}
 });
 
+/**
+ * Generates an AWS CloudFormation template for deploying a Lambda function.
+ *
+ * @param {Object} config - Configuration object for the Lambda function.
+ * @param {string} config.appName - The name of the Lambda function.
+ * @param {string} [config.handler='index.handler'] - The handler for the Lambda function.
+ * @param {string} config.runtime - The runtime environment for the Lambda function (e.g., 'nodejs14.x').
+ * @param {number} [config.timeout=3] - The timeout duration for the Lambda function in seconds.
+ * @param {number} [config.memory=128] - The memory size for the Lambda function in MB.
+ * @returns {Object} The CloudFormation template for the Lambda function.
+ */
 const generateLambdaTemplate = (config) => ({
 	AWSTemplateFormatVersion: '2010-09-09',
 	Description: `Lambda function deployment for ${config.appName}`,
@@ -63,6 +84,17 @@ const generateLambdaTemplate = (config) => ({
 	}
 });
 
+/**
+ * Generates an AWS CloudFormation template for deploying an ECS cluster.
+ *
+ * @param {Object} config - Configuration object for the ECS deployment.
+ * @param {string} config.appName - The name of the application.
+ * @param {string} config.launchType - The launch type for the ECS task (e.g., 'EC2', 'FARGATE').
+ * @param {string} [config.cpu='256'] - The number of CPU units used by the task.
+ * @param {string} [config.memory='512'] - The amount of memory (in MiB) used by the task.
+ * @param {string} [config.containerImage='nginx:latest'] - The Docker image to use for the container.
+ * @returns {Object} The AWS CloudFormation template for the ECS cluster deployment.
+ */
 const generateECSTemplate = (config) => ({
 	AWSTemplateFormatVersion: '2010-09-09',
 	Description: `ECS cluster deployment for ${config.appName}`,
@@ -94,6 +126,12 @@ const generateECSTemplate = (config) => ({
 	}
 });
 
+/**
+ * Retrieves the Amazon Machine Image (AMI) ID for a given AWS region.
+ *
+ * @param {string} region - The AWS region code (e.g., 'us-east-1', 'us-west-2').
+ * @returns {string} The AMI ID corresponding to the specified region. If the region is not found, returns the AMI ID for 'us-east-1'.
+ */
 const getAMIForRegion = (region) => {
 	const amiMap = {
 		'us-east-1': 'ami-0c55b159cbfafe1f0',
